@@ -1,4 +1,4 @@
-name: 'Dynamic checklist'
+name: 'Dynamic PR Checklists'
 description: 'Analyze code and create a dynamic checklist, by commenting on PR'
 inputs:
   mappingFile:
