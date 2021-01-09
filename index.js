@@ -41,7 +41,8 @@ async function run() {
     core.debug('----------------')
 
     // if there's a prior comment by this bot, delete it
-    const oldPRComment = comments.find(c => c.user.login == 'github-actions[bot]'  && c.body.includes('**Checklist:**'))
+    const oldPRComment = comments.find(c => c.user.login == 'github-actions[bot]'  && c.body.includes('**Checklist:**'));
+    
     if(oldPRComment){
       core.info('deleting old checklist comment');
       await octokit.issues.deleteComment({
