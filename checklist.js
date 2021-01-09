@@ -1,20 +1,25 @@
 const getChecklist = (diff, mappings) => {
   let checklist = []
 
+
   if (diff && mappings) {
     const diffInLowerCase = diff.toLowerCase();
 
-    mappings && mappings.forEach(mapping => {
-      const keywords = mapping.keywords
-      for (let i = 0; i < keywords.length; i++) {
-        if (diffInLowerCase.includes(keywords[i].toLowerCase())) {
-          checklist.push(mapping.comment)
-          break;
+    mappings.forEach(mapping => {
+      if (mapping.triggers === 'always' || mapping.triggers[0] === 'always'){
+        checklist = [...checklist, ...mapping.items];
+      } else {
+        const triggers = mapping.triggers.map(t=>new RegExp(t, 'i'));
+
+        for (let t of triggers) {
+          if (t.test(diffInLowerCase)) {
+            checklist = [...checklist, ...mapping.items];
+            break;
+          }
         }
       }
-    })
+    });
   }
-
   return checklist;
 }
 

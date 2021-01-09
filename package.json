@@ -1,16 +1,16 @@
 {
-  "name": "javascript-action",
-  "version": "1.0.0",
-  "description": "JavaScript Action Template",
+  "name": "pr-checklist",
+  "version": "2.1.0",
+  "description": "Pull Request Dynamic Checklist Github Action",
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
-    "package": "ncc build index.js -o dist",
-    "test": "eslint index.js && jest"
+    "package": "npx @vercel/ncc build index.js -o dist",
+    "test": "npx mocha checklist.test.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
+    "url": "git+https://github.com/moonrisedev/pr-checklist.git"
   },
   "keywords": [
     "GitHub",
@@ -20,16 +20,17 @@
   "author": "GitHub",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
+    "url": "https://github.com/moonrisedev/pr-checklist.git"
   },
-  "homepage": "https://github.com/actions/javascript-action#readme",
+  "homepage": "https://github.com/moonrisedev/pr-checklist.git",
   "dependencies": {
     "@actions/core": "^1.1.1",
     "@actions/github": "^1.1.0"
   },
   "devDependencies": {
-    "@zeit/ncc": "^0.20.5",
+    "@vercel/ncc": "^0.26.2",
+    "chai": "^4.2.0",
     "eslint": "^6.3.0",
-    "jest": "^24.9.0"
+    "mocha": "^8.2.1"
   }
 }

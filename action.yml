@@ -1,10 +1,10 @@
 name: 'Dynamic PR Checklists'
-description: 'Analyze code and create a dynamic checklist, by commenting on PR'
+description: 'Analyze a PR diff and create a dynamic checklist in a generated PR comment'
 inputs:
   mappingFile:
-    description: 'mapping of keywords with comment'
+    description: 'configuration of triggers and corresponding checklist items'
     required: true
-    default: 'mapping.json'
+    default: './github/checklistConfig.json'
 outputs:
   checklist:
     description: 'The final checklist in md format'

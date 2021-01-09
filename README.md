@@ -1,7 +1,5 @@
 
-<p align="center">
-  <a href="https://github.com/actions/javascript-action/actions"><img alt="javscript-action status" src="https://github.com/actions/javascript-action/workflows/units-test/badge.svg"></a>
-</p>
+
 
 # Dynamic checklist
 
@@ -25,20 +23,25 @@ Example mapping.json
 {
   "mappings": [
     {
-      "keywords": ["create index", "createIndex"],
-      "comment": "Indexes have been created concurrently in big tables"
+      "triggers": ["create index", "createIndex"],
+      "items": [
+        "Indexes have been created concurrently in big tables",
+      ]
     },
     {
-      "keywords": ["connection", "session", "CloseableHttpClient", "HttpClient"],
-      "comment": "Resources have been closed in finally block or using try-with-resources"
+      "triggers": ["connection", "session", "CloseableHttpClient", "HttpClient"],
+      "items": ["Resources have been closed in finally block or using try-with-resources"]
     },
     {
-      "keywords": ["RequestMapping", "GetMapping", "PostMapping", "PutMapping"],
-      "comment": "Endpoint URLs exposed by application use only small case"
+      "triggers": ["RequestMapping", "GetMapping", "PostMapping", "PutMapping"],
+      "items": ["Endpoint URLs exposed by application use only small case"]
     },
     {
-      "keywords": ["keyword1", "keyword2"],
-      "comment": "Expert comment"
+      "triggers": ["keyword1", "keyword2"],
+      "items": [
+        "reminder about keywords",
+        "another reminder about keywords"
+      ]
     }
   ]
 }
@@ -75,7 +78,7 @@ jobs:
       - name: Dynamic checklist action
         uses: vishalsinha21/dynamic-checklist@v1
         with:
-          mappingFile: 'mapping.json'
+          config: '.githb/checklistConfig.json'
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
 
@@ -101,7 +104,7 @@ jobs:
         id: dynamic_checklist
         uses: vishalsinha21/dynamic-checklist@v1
         with:
-          mappingFile: 'mapping.json'
+          config: '.githb/checklistConfig.json'
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
       - name: Print checklist
@@ -112,7 +115,7 @@ The path to mapping file is relative to your repo root directory. For example, i
 
 ```yaml
         with:
-          mappingFile: './checklist/mapping.json'
+          config: '.githb/checklistConfig.json'
 ```
 
 Logs of this action does not prints the pull request diff by default, it gets printed at debug level. In case you are interested in looking at the pull request diff, and the newly added line then add secret 'ACTIONS_STEP_DEBUG' as true in the settings of your repo. 
@@ -122,3 +125,10 @@ More details [here](https://docs.github.com/en/actions/configuring-and-managing-
 It also shows the example of how a comment would be made on the pull request. Since the added mapping file has all the keywords, it adds all possible comments to the checklist.
 
 [Here](https://github.com/vishalsinha21/EmployeeManagement/pull/4) is an example which shows the dynamic checklist which was created based on the changes as part of that pull request. Only 2 comments have been added in this particular instance based on code diff and mapping file in the repo.
+
+
+## Todo
+
+- don't output multiple checklists
+- change checklist bot name if possible
+
