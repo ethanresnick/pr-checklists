@@ -33,17 +33,23 @@ async function run() {
       repo: context.repo.repo,
     });
 
+
+
     core.debug('PR comments:');
     core.debug('----------------')
     core.debug(comments)
     core.debug('----------------')
 
     // if there's a prior comment by this bot, delete it
-    // octokit.pulls.deleteReviewComment({
-    //   owner: context.repo.owner,
-    //   repo: context.repo.repo,
-    //   comment_id: id,
-    // });
+    const oldPRComment = comments.find(c => c.user.login == 'github-actions[bot]'  && c.body.includes('**Checklist:**'))
+    if(oldPRComment){
+      core.info('deleting old checklist comment');
+      await octokit.issues.deleteComment({
+        owner: context.repo.owner,
+        repo: context.repo.repo,
+        comment_id: oldPRComment.id,
+      });
+    }
 
     const prDiff = prResponse.data;
     core.debug('Pull request diff:')
