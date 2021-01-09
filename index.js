@@ -17,7 +17,7 @@ async function run() {
     core.info('keyword to comment mappings found: \n' + JSON.stringify(mappings))
 
     const token = process.env.GITHUB_TOKEN || ''
-    const octokit = new github.GitHub(token)
+    const octokit = github.getOctokit(myToken);
     const context = github.context;
 
     const prResponse = await octokit.pulls.get({
