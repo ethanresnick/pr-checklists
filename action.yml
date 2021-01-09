@@ -1,7 +1,7 @@
 name: 'Dynamic PR Checklists'
 description: 'Analyze a PR diff and create a dynamic checklist in a generated PR comment'
 inputs:
-  mappingFile:
+  config:
     description: 'configuration of triggers and corresponding checklist items'
     required: true
     default: './github/checklistConfig.json'

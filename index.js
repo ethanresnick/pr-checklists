@@ -27,8 +27,8 @@ async function run() {
       headers: {accept: "application/vnd.github.v3.diff"}
     });
 
-    const {data: comments} = await octokit.pulls.listReviewComments({
-      pull_number: context.payload.pull_request.number,
+    const {data: comments} = await client.issues.listComments({
+      issue_number: context.payload.pull_request.number,
       owner: context.repo.owner,
       repo: context.repo.repo,
     });
