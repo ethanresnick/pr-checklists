@@ -125,10 +125,3 @@ More details [here](https://docs.github.com/en/actions/configuring-and-managing-
 It also shows the example of how a comment would be made on the pull request. Since the added mapping file has all the keywords, it adds all possible comments to the checklist.
 
 [Here](https://github.com/vishalsinha21/EmployeeManagement/pull/4) is an example which shows the dynamic checklist which was created based on the changes as part of that pull request. Only 2 comments have been added in this particular instance based on code diff and mapping file in the repo.
-
-
-## Todo
-
-- don't output multiple checklists
-- change checklist bot name if possible
-
