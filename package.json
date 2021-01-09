@@ -24,8 +24,8 @@
   },
   "homepage": "https://github.com/moonrisedev/pr-checklist.git",
   "dependencies": {
-    "@actions/core": "^1.1.1",
-    "@actions/github": "^1.1.0"
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.26.2",
