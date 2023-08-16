@@ -1,22 +1,23 @@
-const Checklist = require('./checklist')
+const Checklist = require("./checklist");
 
-const core = require('@actions/core');
-const github = require('@actions/github');
-const fs = require('fs');
-const path = require('path')
+const core = require("@actions/core");
+const github = require("@actions/github");
+const fs = require("fs");
+const path = require("path");
 
 async function run() {
   try {
+    const configFile = core.getInput("config");
+    core.info("config: " + configFile);
 
-    const configFile = core.getInput('config')
-    core.info('config: ' + configFile)
+    const filePath = path.resolve(configFile);
+    const data = JSON.parse(fs.readFileSync(filePath, "utf8"));
+    const mappings = data.mappings;
+    core.info(
+      "keyword to comment mappings found: \n" + JSON.stringify(mappings),
+    );
 
-    const filePath = path.resolve(configFile)
-    const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    const mappings = data.mappings
-    core.info('keyword to comment mappings found: \n' + JSON.stringify(mappings))
-
-    const token = process.env.GITHUB_TOKEN || ''
+    const token = process.env.GITHUB_TOKEN || "";
     const octokit = github.getOctokit(token);
     const context = github.context;
 
@@ -24,27 +25,29 @@ async function run() {
       pull_number: context.payload.pull_request.number,
       owner: context.repo.owner,
       repo: context.repo.repo,
-      headers: {accept: "application/vnd.github.v3.diff"}
+      headers: { accept: "application/vnd.github.v3.diff" },
     });
 
-    const {data: comments} = await octokit.issues.listComments({
+    const { data: comments } = await octokit.issues.listComments({
       issue_number: context.payload.pull_request.number,
       owner: context.repo.owner,
       repo: context.repo.repo,
     });
 
-
-
-    core.debug('PR comments:');
-    core.debug('----------------')
-    core.debug(comments)
-    core.debug('----------------')
+    core.debug("PR comments:");
+    core.debug("----------------");
+    core.debug(comments);
+    core.debug("----------------");
 
     // if there's a prior comment by this bot, delete it
-    const oldPRComment = comments.find(c => c.user.login == 'github-actions[bot]'  && c.body.includes('**Checklist:**'));
-    
-    if(oldPRComment){
-      core.info('deleting old checklist comment');
+    const oldPRComment = comments.find(
+      (c) =>
+        c.user.login == "github-actions[bot]" &&
+        c.body.includes("**Checklist:**"),
+    );
+
+    if (oldPRComment) {
+      core.info("deleting old checklist comment");
       await octokit.issues.deleteComment({
         owner: context.repo.owner,
         repo: context.repo.repo,
@@ -53,16 +56,16 @@ async function run() {
     }
 
     const prDiff = prResponse.data;
-    core.debug('Pull request diff:')
-    core.debug('----------------')
-    core.debug(prDiff)
-    core.debug('----------------')
+    core.debug("Pull request diff:");
+    core.debug("----------------");
+    core.debug(prDiff);
+    core.debug("----------------");
 
     const onlyAddedLines = Checklist.getOnlyAddedLines(prDiff);
-    core.debug('Newly added lines:')
-    core.debug('----------------')
-    core.debug(onlyAddedLines)
-    core.debug('----------------')
+    core.debug("Newly added lines:");
+    core.debug("----------------");
+    core.debug(onlyAddedLines);
+    core.debug("----------------");
 
     const checklist = Checklist.getFinalChecklist(onlyAddedLines, mappings);
     if (checklist && checklist.trim().length > 0) {
@@ -70,16 +73,18 @@ async function run() {
         issue_number: context.payload.pull_request.number,
         owner: context.repo.owner,
         repo: context.repo.repo,
-        body: checklist
-      })
+        body: checklist,
+      });
     } else {
-      core.info("No dynamic checklist was created based on code difference and config file")
+      core.info(
+        "No dynamic checklist was created based on code difference and config file",
+      );
     }
 
-    core.setOutput('checklist', checklist);
+    core.setOutput("checklist", checklist);
   } catch (error) {
     core.setFailed(error.message);
   }
 }
 
-run()
+run();

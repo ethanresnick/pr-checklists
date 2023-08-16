@@ -1,15 +1,14 @@
 const getChecklist = (diff, mappings) => {
-  let checklist = []
-
+  let checklist = [];
 
   if (diff && mappings) {
     const diffInLowerCase = diff.toLowerCase();
 
-    mappings.forEach(mapping => {
-      if (mapping.triggers === 'always' || mapping.triggers[0] === 'always'){
+    mappings.forEach((mapping) => {
+      if (mapping.triggers === "always" || mapping.triggers[0] === "always") {
         checklist = [...checklist, ...mapping.items];
       } else {
-        const triggers = mapping.triggers.map(t=>new RegExp(t, 'i'));
+        const triggers = mapping.triggers.map((t) => new RegExp(t, "i"));
 
         for (let t of triggers) {
           if (t.test(diffInLowerCase)) {
@@ -21,35 +20,35 @@ const getChecklist = (diff, mappings) => {
     });
   }
   return checklist;
-}
+};
 
 const getFormattedChecklist = (checklist) => {
-  let formattedChecklist = '';
+  let formattedChecklist = "";
   if (checklist.length > 0) {
-    formattedChecklist = '**Checklist:**'
+    formattedChecklist = "**Checklist:**";
 
     for (let i = 0; i < checklist.length; i++) {
-      formattedChecklist += '\n';
-      formattedChecklist += '- [ ] ' + checklist[i];
+      formattedChecklist += "\n";
+      formattedChecklist += "- [ ] " + checklist[i];
     }
   }
   return formattedChecklist;
-}
+};
 
 const getFinalChecklist = (diff, mappings) => {
   let checklist = getChecklist(diff, mappings);
   let formattedChecklist = getFormattedChecklist(checklist);
   return formattedChecklist;
-}
+};
 
-const getOnlyAddedLines = diff => {
-  let newLines = ''
+const getOnlyAddedLines = (diff) => {
+  let newLines = "";
 
   if (diff != null) {
-    const arr = diff.split('\n')
+    const arr = diff.split("\n");
     for (let i = 0; i < arr.length; i++) {
-      if (arr[i].startsWith('+')) {
-        newLines = newLines.concat(arr[i], '\n')
+      if (arr[i].startsWith("+")) {
+        newLines = newLines.concat(arr[i], "\n");
       }
     }
   } else {
@@ -57,11 +56,11 @@ const getOnlyAddedLines = diff => {
   }
 
   return newLines;
-}
+};
 
 module.exports = {
   getFinalChecklist,
   getChecklist,
   getFormattedChecklist,
-  getOnlyAddedLines
-}
+  getOnlyAddedLines,
+};

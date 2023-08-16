@@ -1,16 +1,16 @@
-name: 'Dynamic PR Checklists'
-description: 'Analyze a PR diff and create a dynamic checklist in a generated PR comment'
+name: "Dynamic PR Checklists"
+description: "Analyze a PR diff and create a dynamic checklist in a generated PR comment"
 inputs:
   config:
-    description: 'configuration of triggers and corresponding checklist items'
+    description: "configuration of triggers and corresponding checklist items"
     required: true
-    default: './github/checklistConfig.json'
+    default: "./github/checklistConfig.json"
 outputs:
   checklist:
-    description: 'The final checklist in md format'
+    description: "The final checklist in md format"
 runs:
-  using: 'node12'
-  main: 'dist/index.js'
+  using: "node12"
+  main: "dist/index.js"
 branding:
-  icon: 'check-square'
-  color: 'green'
+  icon: "check-square"
+  color: "green"

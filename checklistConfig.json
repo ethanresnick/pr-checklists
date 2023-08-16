@@ -5,7 +5,12 @@
       "items": ["Indexes have been created concurrently in big tables"]
     },
     {
-      "triggers": ["connection", "session", "CloseableHttpClient", "HttpClient"],
+      "triggers": [
+        "connection",
+        "session",
+        "CloseableHttpClient",
+        "HttpClient"
+      ],
       "items": "Resources have been closed in finally block or using try-with-resources"
     },
     {
@@ -14,10 +19,7 @@
     },
     {
       "triggers": ["trigger1", "trigger2"],
-      "items": [
-        "checklist item", 
-        "another checklist item"
-      ]
+      "items": ["checklist item", "another checklist item"]
     }
   ]
 }

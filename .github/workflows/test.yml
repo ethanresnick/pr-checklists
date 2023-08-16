@@ -1,7 +1,7 @@
 name: "units-test"
 on:
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   # unit tests
@@ -16,9 +16,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - uses: ./
-      with:
-        mappingFile: 'mapping.json'
-      env:
-        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+      - uses: actions/checkout@v1
+      - uses: ./
+        with:
+          mappingFile: "mapping.json"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
