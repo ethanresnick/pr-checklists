@@ -1,14 +1,14 @@
 name: "units-test"
 on:
   pull_request:
-    branches: [master]
+    branches: [master, main]
 
 jobs:
   # unit tests
   units:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - run: npm ci
       - run: npm test
 
@@ -16,9 +16,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: ./
         with:
-          mappingFile: "mapping.json"
+          config: "checklistConfig.json"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

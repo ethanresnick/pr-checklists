@@ -1,39 +1,16 @@
-const { expect } = require("chai");
-const Checklist = require("./checklist");
+import chai from "chai";
+import * as Checklist from "./checklist.js";
 
-describe("should test newly added lines", () => {
-  it("should return blank for blank input", () => {
-    const result = Checklist.getOnlyAddedLines("");
-    expect(result).to.equal("");
-  });
-
-  it("should return null for null input", () => {
-    const result = Checklist.getOnlyAddedLines(null);
-    expect(result).to.equal(null);
-  });
-
-  it("should return only added line", () => {
-    const diff =
-      "+ added line1\n" +
-      "- removed line1\n" +
-      "+ added line2\n" +
-      "- removed line2\n";
-
-    const expectedResult = "+ added line1\n" + "+ added line2\n";
-
-    const result = Checklist.getOnlyAddedLines(diff);
-    expect(result).to.equal(expectedResult);
-  });
-});
+const { expect } = chai;
 
 describe("should return checklist creation", () => {
   it("should return empty array", () => {
-    const result = Checklist.getChecklist("", []);
+    const result = Checklist.getChecklist(new Map(), []);
     expect(result).to.deep.equal([]);
   });
 
   it("should return empty array", () => {
-    const diff = "nothing matching in this diff";
+    const diff = new Map();
     const mapping = [
       {
         triggers: ["create index", "createIndex"],
@@ -57,7 +34,10 @@ describe("should return checklist creation", () => {
   });
 
   it("should return items for create index", () => {
-    const diff = "create index order_number_customer_id";
+    const diff = new Map([
+      ["index.js", "create index order_number_customer_id"],
+    ]);
+
     const mapping = [
       {
         triggers: ["create index", "createIndex"],
@@ -83,7 +63,10 @@ describe("should return checklist creation", () => {
   });
 
   it("should return items for create index even if multiple matches for same", () => {
-    const diff = "create index order_number_customer_id\n" + "createIndex";
+    const diff = new Map([
+      ["index.js", "create index order_number_customer_id\n" + "createIndex"],
+    ]);
+
     const mapping = [
       {
         triggers: ["create index", "createIndex"],
@@ -109,9 +92,11 @@ describe("should return checklist creation", () => {
   });
 
   it("should return items for all matching triggers", () => {
-    const diff =
-      "create index order_number_customer_id\n" +
-      "Connection connection = new Connection()";
+    const diff = new Map([
+      ["fileA.js", "create index order_number_customer_id\n"],
+      ["fileB.js", "Connection connection = new Connection()"],
+    ]);
+
     const mapping = [
       {
         triggers: ["create index", "createIndex"],
@@ -146,7 +131,7 @@ describe("should return checklist creation", () => {
   });
 
   it("should return multiple items for triggers with multiple checklist items defined", () => {
-    const diff = "keyword1 keyword2";
+    const diff = new Map([["index.js", "keyword1 keyword2"]]);
     const mapping = [
       {
         triggers: ["create index", "createIndex"],
@@ -178,7 +163,7 @@ describe("should return checklist creation", () => {
   });
 
   it("should return always triggers no matter what the diff says", () => {
-    const diff = "keyword2";
+    const diff = new Map([["index.js", "keyword2"]]);
     const mapping = [
       {
         triggers: ["always"],
@@ -215,7 +200,7 @@ describe("should return checklist creation", () => {
   });
 
   it("supports regex triggers", () => {
-    const diff = "keyword2 platypus";
+    const diff = new Map([["index.js", "keyword2 platypus"]]);
     const mapping = [
       {
         triggers: [
@@ -253,16 +238,14 @@ describe("should return checklist creation", () => {
 
 describe("should test formatting of check list", () => {
   it("should return blank for empty checklist array", () => {
-    const result = Checklist.getFormattedChecklist([]);
+    const result = Checklist.formatChecklist([]);
     expect(result).to.equal("");
   });
 
   it("should return formatted checklist", () => {
     const checklist = [
       "Indexes have been created concurrently in big tables",
-      [
-        "Resources have been closed in finally block or using try-with-resources",
-      ],
+      "Resources have been closed in finally block or using try-with-resources",
     ];
 
     const expectedResult =
@@ -270,16 +253,23 @@ describe("should test formatting of check list", () => {
       "- [ ] Indexes have been created concurrently in big tables\n" +
       "- [ ] Resources have been closed in finally block or using try-with-resources";
 
-    const result = Checklist.getFormattedChecklist(checklist);
+    const result = Checklist.formatChecklist(checklist);
     expect(result).to.equal(expectedResult);
   });
 });
 
 describe("should test final check list", () => {
   it("should return final checklist", () => {
-    const diff =
-      "create index order_number_customer_id\n" +
-      "Connection connection = new Connection()";
+    const diffString = `
+diff --git a/a.txt b/a.txt
+index 7898192..7e8a165 100644
+--- a/a.txt
++++ b/a.txt
+@@ -1 +1,2 @@
+  a
++create index connection
+`;
+
     const mapping = [
       {
         triggers: ["create index", "createIndex"],
@@ -310,17 +300,17 @@ describe("should test final check list", () => {
       "- [ ] Indexes have been created concurrently in big tables\n" +
       "- [ ] Resources have been closed in finally block or using try-with-resources";
 
-    const result = Checklist.getFinalChecklist(diff, mapping);
+    const result = Checklist.getFormattedChecklist(diffString, mapping);
     expect(result).to.equal(expectedResult);
   });
 
   it("should handle null values gracefully", () => {
-    const result = Checklist.getFinalChecklist(null, null);
+    const result = Checklist.getFormattedChecklist(null, null);
     expect(result).to.equal("");
   });
 
   it("should handle empty diff and mapping gracefully", () => {
-    const result = Checklist.getFinalChecklist("", []);
+    const result = Checklist.getFormattedChecklist("", []);
     expect(result).to.equal("");
   });
 });
