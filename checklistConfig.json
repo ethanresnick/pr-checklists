@@ -20,6 +20,10 @@
     {
       "triggers": ["trigger1", "trigger2"],
       "items": ["checklist item", "another checklist item"]
+    },
+    {
+      "triggers": ["always"],
+      "items": ["checklist item", "another checklist item"]
     }
   ]
 }
