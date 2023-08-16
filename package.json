@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/moonrisedev/pr-checklist.git"
+    "url": "git+https://github.com/ethanresnick/pr-checklist.git"
   },
   "keywords": [
     "GitHub",
@@ -20,17 +20,19 @@
   "author": "GitHub",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/moonrisedev/pr-checklist.git"
+    "url": "https://github.com/ethanresnick/pr-checklist.git"
   },
-  "homepage": "https://github.com/moonrisedev/pr-checklist.git",
+  "homepage": "https://github.com/ethanresnick/pr-checklist.git",
   "dependencies": {
-    "@actions/core": "^1.2.6",
-    "@actions/github": "^4.0.0"
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
+    "minimatch": "^9.0.3"
   },
   "devDependencies": {
     "@vercel/ncc": "^0.26.2",
     "chai": "^4.2.0",
     "eslint": "^6.3.0",
-    "mocha": "^8.2.1"
+    "mocha": "^8.2.1",
+    "prettier": "^3.0.2"
   }
 }
