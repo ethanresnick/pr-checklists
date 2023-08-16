@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
-    "package": "npx @vercel/ncc build index.js -o dist",
-    "test": "npx mocha checklist.test.js"
+    "package": "npx @vercel/ncc build index.ts -o dist",
+    "test": "mocha checklist.test.js",
+    "typecheck": "tsc --noEmit",
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
@@ -29,10 +31,13 @@
     "minimatch": "^9.0.3"
   },
   "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^20.5.0",
     "@vercel/ncc": "^0.26.2",
     "chai": "^4.2.0",
     "eslint": "^6.3.0",
     "mocha": "^8.2.1",
-    "prettier": "^3.0.2"
+    "prettier": "^3.0.2",
+    "typescript": "^5.1.6"
   }
 }
