@@ -11,14 +11,21 @@
         "CloseableHttpClient",
         "HttpClient"
       ],
-      "items": "Resources have been closed in finally block or using try-with-resources"
+      "items": [
+        "Resources have been closed in finally block or using try-with-resources"
+      ]
     },
     {
       "triggers": ["RequestMapping", "GetMapping", "PostMapping", "PutMapping"],
       "items": ["Endpoint URLs exposed by application use only small case"]
     },
     {
-      "triggers": ["trigger1", "trigger2"],
+      "triggers": ["trigger", "trigger2"],
+      "paths": "README.md",
+      "items": ["checklist item3", "another checklist item"]
+    },
+    {
+      "triggers": ["always"],
       "items": ["checklist item", "another checklist item"]
     }
   ]
